@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: './docker/php/8.3'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP:-1000}'
+                WWWUSER: '${WWWUSER:-1000}'
+        container_name: stock-aggregator-app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        env_file:
+            - ./.env
+        volumes:
+            - '.:/var/www/html:delegated'
+            - './docker/php/8.3/php.ini:/usr/local/etc/php/php.ini'
+        networks:
+            - stock-network
+        depends_on:
+            - mysql
+            - redis
+    nginx:
+        image: nginx:alpine
+        container_name: stock-aggregator-nginx
+        ports:
+            - '${APP_PORT:-8001}:80'
+        volumes:
+            - '.:/var/www/html'
+            - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf'
+        networks:
+            stock-network:
+                aliases:
+                    - stock-aggregator.loc
+        depends_on:
+            - app
+    mysql:
+        image: 'mysql:latest'
+        container_name: stock-aggregator-mysql
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - 'vol-mysql:/var/lib/mysql'
+            - './docker/mysql/create-database.sh:/docker-entrypoint-initdb.d/10-create-database.sh'
+        networks:
+            - stock-network
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'vol-redis:/data'
+        networks:
+            - stock-network
+        healthcheck:
+            test:
+                - CMD
+                - redis-cli
+                - ping
+            retries: 3
+            timeout: 5s
+networks:
+    stock-network:
+        driver: bridge
+
+volumes:
+    vol-mysql:
+        driver: local
+    vol-redis:
+        driver: local
