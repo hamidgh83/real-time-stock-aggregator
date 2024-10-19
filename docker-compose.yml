@@ -57,6 +57,7 @@ services:
             timeout: 5s
     redis:
         image: 'redis:alpine'
+        container_name: stock-aggregator-redis
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
