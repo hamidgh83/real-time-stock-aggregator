@@ -8,7 +8,7 @@ use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
-class AlphaVantageService
+class ClientService
 {
     public function __construct(
         protected Client $httpClient,
