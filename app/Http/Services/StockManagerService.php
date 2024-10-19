@@ -22,19 +22,9 @@ class StockManagerService
     {
         DB::beginTransaction();
 
-        $data = $records->map(function ($record, $timestamp) use ($symbol) {
-            $transformedData = [];
-            foreach ($record as $key => $value) {
-                $newKey                   = preg_replace('/^\d+\.\s*/', '', $key);
-                $transformedData[$newKey] = $value;
-            }
-
-            return $transformedData + ['timestamp' => $timestamp, 'symbol' => $symbol];
-        });
-
         try {
             StockPrice::upsert(
-                $data->toArray(),
+                $this->transformData($records, $symbol)->toArray(),
                 ['symbol', 'timestamp'],
                 ['open', 'high', 'low', 'close', 'volume']
             );
@@ -49,5 +39,18 @@ class StockManagerService
 
             throw $e;
         }
+    }
+
+    protected function transformData(Collection $data, string $symbol): Collection
+    {
+        return $data->map(function ($record, $timestamp) use ($symbol) {
+            $transformedData = [];
+            foreach ($record as $key => $value) {
+                $newKey                   = preg_replace('/^\d+\.\s*/', '', $key);
+                $transformedData[$newKey] = $value;
+            }
+
+            return $transformedData + ['timestamp' => $timestamp, 'symbol' => $symbol];
+        });
     }
 }
