@@ -1,0 +1,112 @@
+[
+    {
+        "symbol": "AAPL",
+        "name": "Apple Inc",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.7143"
+    },
+    {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.6154"
+    },
+    {
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc - Class A",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.8889"
+    },
+    {
+        "symbol": "IBM",
+        "name": "International Business Machines Corp",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "1.0000"
+    },
+    {
+        "symbol": "DELL",
+        "name": "Dell Technologies Inc - Class C",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "1.0000"
+    },
+    {
+        "symbol": "LNVGF",
+        "name": "Lenovo Group Ltd",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.5455"
+    },
+    {
+        "symbol": "HP",
+        "name": "Helmerich & Payne Inc",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "1.0000"
+    },
+    {
+        "symbol": "SSNLF",
+        "name": "Samsung Electronics",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.5385"
+    },
+    {
+        "symbol": "SONY",
+        "name": "Sony Group Corporation",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "1.0000"
+    },
+    {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corp",
+        "type": "Equity",
+        "region": "United States",
+        "marketOpen": "09:30",
+        "marketClose": "16:00",
+        "timezone": "UTC-04",
+        "currency": "USD",
+        "matchScore": "0.8000"
+    }
+]
