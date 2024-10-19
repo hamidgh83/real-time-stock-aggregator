@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Services\AlphaVantageService;
+use App\Http\Services\ClientService;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -14,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(AlphaVantageService::class, function (Application $app) {
-            return new AlphaVantageService(new HttpClient([
+        $this->app->singleton(ClientService::class, function (Application $app) {
+            return new ClientService(new HttpClient([
                 'base_uri' => config('alpha_vantage.url'),
             ]), $app->make('cache'));
         });
