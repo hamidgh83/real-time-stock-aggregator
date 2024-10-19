@@ -18,13 +18,23 @@ class StockManagerService
         return StockSymbol::all();
     }
 
-    public function recordStockPrices(Collection $records)
+    public function recordStockPrices(Collection $records, string $symbol)
     {
         DB::beginTransaction();
 
+        $data = $records->map(function ($record, $timestamp) use ($symbol) {
+            $transformedData = [];
+            foreach ($record as $key => $value) {
+                $newKey                   = preg_replace('/^\d+\.\s*/', '', $key);
+                $transformedData[$newKey] = $value;
+            }
+
+            return $transformedData + ['timestamp' => $timestamp, 'symbol' => $symbol];
+        });
+
         try {
             StockPrice::upsert(
-                $records->toArray(),
+                $data->toArray(),
                 ['symbol', 'timestamp'],
                 ['open', 'high', 'low', 'close', 'volume']
             );
@@ -34,7 +44,6 @@ class StockManagerService
             DB::rollBack();
 
             Log::error('Failed to upsert stock prices.', [
-                'data'      => $records->toArray(),
                 'exception' => $e->getMessage(),
             ]);
 

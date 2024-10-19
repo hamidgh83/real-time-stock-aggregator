@@ -14,5 +14,5 @@ class UpdateStockData
     /**
      * Create a new event instance.
      */
-    public function __construct(public Collection $data) {}
+    public function __construct(public string $symbol, public Collection $data) {}
 }

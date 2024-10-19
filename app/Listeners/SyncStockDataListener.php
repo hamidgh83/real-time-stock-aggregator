@@ -32,6 +32,6 @@ class SyncStockDataListener implements ShouldQueue
     public function handle(UpdateStockData $event): void
     {
         // If the function throws an exception, the job will automatically be released back onto the queue
-        $this->stockManagerService->recordStockPrices($event->data);
+        $this->stockManagerService->recordStockPrices($event->data, $event->symbol);
     }
 }
