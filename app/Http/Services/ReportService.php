@@ -3,57 +3,64 @@
 namespace App\Http\Services;
 
 use App\Models\StockPrice;
-use App\Models\StockSymbol;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ReportService
 {
-    /**
-     * Get the real-time stock prices and percentage changes.
-     */
-    public function getStockReport(): Collection
+    public function getStockReport(int $interval = 5, int $page = 1, int $perPage = 10): LengthAwarePaginator
     {
-        $symbols = StockSymbol::all();
+        $paginator = $this->getReport($interval, $page, $perPage);
 
-        return $symbols->map(function ($symbol) {
-            $latestPrices = StockPrice::where('symbol', $symbol->name)
-                ->orderBy('timestamp', 'desc')
-                ->take(2) // Fetch the latest 2 prices
-                ->get()
-            ;
-
-            if ($latestPrices->count() < 2) {
-                // Not enough data to calculate percentage change
-                return [
-                    'symbol'            => $symbol->name,
-                    'latest_price'      => optional($latestPrices->first())->close,
-                    'percentage_change' => null,
-                ];
-            }
-
-            // Latest price
-            $currentPrice = $latestPrices->first()->close;
-
-            // Previous price (second latest)
-            $previousPrice = $latestPrices->last()->close;
-
-            $high   = $latestPrices->first()->high;
-            $low    = $latestPrices->first()->low;
-            $volume = $latestPrices->first()->volume;
-
-            // Calculate percentage change
-            $percentageChange = $this->calculatePercentageChange($previousPrice, $currentPrice);
+        $mapped = $paginator->getCollection()->groupBy('symbol')->map(function ($group) {
+            $firstRecord  = $group->where('timestamp', $group->min('timestamp'))->first();
+            $lastRecord   = $group->where('timestamp', $group->max('timestamp'))->first();
+            $initialPrice = $firstRecord->open;
+            $finalPrice   = $lastRecord->close;
 
             return [
-                'symbol' => $symbol->name,
-                'name'   => $symbol->description,
-                'high'   => $high,
-                'low'    => $low,
-                'volume' => $volume,
-                'close'  => $currentPrice,
-                'change' => $percentageChange,
+                'open'   => $initialPrice,
+                'close'  => $finalPrice,
+                'symbol' => $firstRecord->symbol,
+                'name'   => $firstRecord->symbolDetails->description,
+                'high'   => $lastRecord->high,
+                'low'    => $lastRecord->low,
+                'volume' => $lastRecord->volume,
+                'change' => $this->calculatePercentageChange($initialPrice, $finalPrice),
             ];
         });
+
+        return $paginator->setCollection($mapped);
+    }
+
+    protected function getReport(int $interval, int $page = 1, int $perPage = 10): LengthAwarePaginator
+    {
+        $subQuery = StockPrice::select('symbol')
+            ->selectRaw('MAX(timestamp) AS max_timestamp, MIN(timestamp) AS min_timestamp')
+            ->whereRaw('timestamp BETWEEN (
+            SELECT MAX(timestamp) - INTERVAL ? MINUTE
+            FROM stock_prices AS sp1
+            WHERE sp1.symbol = stock_prices.symbol
+        )
+        AND (
+            SELECT MAX(timestamp)
+            FROM stock_prices AS sp2
+            WHERE sp2.symbol = stock_prices.symbol
+        )', [$interval])
+            ->groupBy('symbol')
+        ;
+
+        return StockPrice::from('stock_prices as sp1')
+            ->joinSub($subQuery, 'subq', function ($join) {
+                $join->on('subq.symbol', '=', 'sp1.symbol');
+            })
+            ->where(function ($query) {
+                $query->whereColumn('sp1.timestamp', 'subq.max_timestamp')
+                    ->orWhereColumn('sp1.timestamp', 'subq.min_timestamp')
+                ;
+            })
+            ->with('symbolDetails')
+            ->paginate($perPage * 2, '*', 'page', $page)
+        ;
     }
 
     /**
