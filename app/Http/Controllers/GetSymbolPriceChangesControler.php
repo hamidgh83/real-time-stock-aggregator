@@ -7,7 +7,7 @@ use App\Http\Resources\PriceChangesResource;
 use App\Http\Services\ReportService;
 use App\Models\StockSymbol;
 
-class GetSymbolPriceCHangesControler extends Controller
+class GetSymbolPriceChangesControler extends Controller
 {
     public function __construct(protected ReportService $reportService) {}
 
