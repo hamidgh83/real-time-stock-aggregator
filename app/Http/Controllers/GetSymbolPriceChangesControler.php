@@ -11,7 +11,7 @@ class GetSymbolPriceChangesControler extends Controller
 {
     public function __construct(protected ReportService $reportService) {}
 
-    public function __invoke(GetPriceChangesRequest $request, StockSymbol $symbol)
+    public function __invoke(GetPriceChangesRequest $request, ?StockSymbol $symbol = null)
     {
         $validated = $request->validated();
 

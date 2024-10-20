@@ -10,5 +10,6 @@ Route::get('/seed', FetchStockDataController::class)->name('seed');
 Route::get('/seed/run', FetchStockDataController::class . '@run')->name('seed.run');
 
 Route::group(['prefix' => 'api', 'middleware' => 'api-group'], function () {
-    Route::get('/stock/{symbol}/prices', GetSymbolPriceChangesControler::class)->name('stock-data');
+    Route::post('/stock/{symbol}/prices', GetSymbolPriceChangesControler::class)->name('stock-data.symbol');
+    Route::post('/stock/prices', GetSymbolPriceChangesControler::class)->name('stock-data');
 });
