@@ -15,6 +15,18 @@ class ClientService
         protected CacheManager $cache
     ) {}
 
+    /**
+     * Retrieves stock data for the given symbol and interval.
+     *
+     * This method first checks the cache for the requested data. If the data is not
+     * found in the cache, it makes an API request to AlphaVantage to fetch the
+     * stock data and stores the result in the cache for the specified interval.
+     *
+     * @param string $symbol   the stock symbol to retrieve data for
+     * @param int    $interval the interval in minutes for the stock data (default is 5 minutes)
+     *
+     * @return Collection a collection of stock data for the given symbol and interval
+     */
     public function getStockData(string $symbol, int $interval = 5): Collection
     {
         // Define the cache key based on the symbol and interval

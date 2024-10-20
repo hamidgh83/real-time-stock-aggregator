@@ -15,9 +15,24 @@ class StockManagerService
 
     public function getSymbols(): EloquentCollection
     {
+        // As the number of symbols is small, we can use the all() method to retrieve all symbols.
+        // Pagination is required for a larger number of symbols.
         return StockSymbol::all();
     }
 
+    /**
+     * Records a collection of stock prices for the given symbol.
+     *
+     * This method will upsert the provided stock price records into the database,
+     * using the symbol and timestamp as the unique identifier. If a record already
+     * exists for the given symbol and timestamp, it will be updated with the new
+     * price data.
+     *
+     * @param Collection $records the collection of stock price records to be recorded
+     * @param string     $symbol  the stock symbol associated with the price records
+     *
+     * @throws \Throwable if there is an error upserting the stock price records
+     */
     public function recordStockPrices(Collection $records, string $symbol)
     {
         DB::beginTransaction();
