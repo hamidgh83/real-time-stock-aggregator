@@ -15,6 +15,10 @@ else
     composer update --no-progress --no-suggest -d ${INSTALL_DIR}
 fi
 
+# Install and build npm packages
+npm install
+npm run build
+
 # Check the database connection and wait for it to be ready
 MAX_RETRIES=5
 RETRY_COUNT=0
