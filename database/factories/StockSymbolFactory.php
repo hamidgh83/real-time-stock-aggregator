@@ -17,7 +17,7 @@ class StockSymbolFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'         => $this->faker->unique()->lexify('????'),
+            'name'         => $this->faker->unique()->randomElement(['AAPL', 'GOOGL', 'MSFT', 'SONY', 'NVIDA']),
             'description'  => $this->faker->sentence,
             'type'         => $this->faker->randomElement(['Equity', 'ETF', 'Index', 'Crypto']),
             'market_open'  => $this->faker->time('H:i'),
