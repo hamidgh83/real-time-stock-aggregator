@@ -27,4 +27,9 @@ class StockSymbol extends Model
     {
         return $this->hasMany(StockPrice::class, 'symbol', 'name');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 }
