@@ -9,7 +9,7 @@ Before you begin, ensure you have the following installed on your machine in cas
 - PHP 8.3 or higher
 - [Docker](https://www.docker.com/get-started) (latest version)
 - [Docker Compose](https://docs.docker.com/compose/install/) (latest version)
-- [Node.js](https://nodejs.org/) (latest version) (for building front-end assets)
+- NPM package installer (for managing frontend dependencies)
 - [Composer](https://getcomposer.org/download/) (latest version) (for managing PHP dependencies)
 
 
@@ -37,7 +37,7 @@ Before you begin, ensure you have the following installed on your machine in cas
    cp .env.example .env
    ```
 
-3. **Build and Run the Docker Containers**:
+4. **Build and Run the Docker Containers**:
    Run the following command to build and start the Docker containers:
 
    ```bash
@@ -48,4 +48,12 @@ Before you begin, ensure you have the following installed on your machine in cas
    Please note that it might take a few minutes for the containers to be fully initialized and the application to be accessible.
 
 After following these steps, you should have a working Laravel application running within Docker containers.
+
+5. **Initialize the database**:
+   Run seeder command to populate the database with initial data:
+
+   ```bash
+   php artisan db:seed --class=StockSymbolsSeeder
+   ```
+This command will populate the database with stock symbols.
 
