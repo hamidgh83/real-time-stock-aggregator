@@ -15,7 +15,7 @@ class GetSymbolPriceChangesControler extends Controller
     {
         $validated = $request->validated();
 
-        return PriceChangesResource::make(
+        return PriceChangesCollection::make(
             $this->reportService->getStockReport(
                 $validated['data_interval'] ?? 5,
                 $validated['page']          ?? 1,
