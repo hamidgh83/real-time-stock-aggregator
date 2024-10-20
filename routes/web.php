@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\GetStockReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', GetStockReportController::class);
