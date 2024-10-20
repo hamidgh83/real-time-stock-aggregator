@@ -31,6 +31,8 @@ class SyncStockDataListener implements ShouldQueue
      */
     public function handle(UpdateStockData $event): void
     {
+        Log::info(sprintf('Updating stock data for symbol "%s ..."', $event->symbol));
+
         // If the function throws an exception, the job will automatically be released back onto the queue
         $this->stockManagerService->recordStockPrices($event->data, $event->symbol);
     }

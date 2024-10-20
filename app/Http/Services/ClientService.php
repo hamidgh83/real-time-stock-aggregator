@@ -45,7 +45,7 @@ class ClientService
                 $data     = json_decode($response->getBody(), true);
 
                 throw_if(JSON_ERROR_NONE !== json_last_error(), new \Exception('Could not extract data from the API response.'));
-                throw_if(isset($data['Information']), new \Exception($data['Information']));
+                throw_if(isset($data['Information']), new \Exception($data['Information'] ?? 'Invalid API response.'));
             } catch (\Throwable $th) {
                 Log::error('AlphaVantage API Error: ' . $th->getMessage());
 
