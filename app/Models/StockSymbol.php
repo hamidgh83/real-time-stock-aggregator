@@ -10,6 +10,8 @@ class StockSymbol extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'description',
@@ -20,8 +22,6 @@ class StockSymbol extends Model
         'region',
         'timezone',
     ];
-
-    public $timestamps = false;
 
     public function stockPrices(): HasMany
     {
