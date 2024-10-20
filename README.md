@@ -1,5 +1,9 @@
-# Laravel Docker Setup
+# Stock Price Monitoring
 
+![Screenshot](screenshot.png "Application Screenshot")
+
+
+## Overview
 This project is a Laravel application that runs within Docker containers. This README provides instructions on setting up the development environment, requirements, and steps to get started.
 
 ## Requirements
@@ -30,14 +34,17 @@ Before you begin, ensure you have the following installed on your machine in cas
    npm install
    ```
 
-3. **Configure Environment Variables**:
+3. **Get the API Key**:
+   To use the application, you need to obtain an API key from the [Alpha Vantage API](https://www.alphavantage.co/). Once you have the API key, update the `.env` file with the key.
+
+4. **Configure Environment Variables**:
    Copy the .env.example file to .env and update the necessary environment variables.
 
    ```bash
    cp .env.example .env
    ```
 
-4. **Build and Run the Docker Containers**:
+5. **Build and Run the Docker Containers**:
    Run the following command to build and start the Docker containers:
 
    ```bash
@@ -49,7 +56,7 @@ Before you begin, ensure you have the following installed on your machine in cas
 
 After following these steps, you should have a working Laravel application running within Docker containers.
 
-5. **Initialize the database**:
+6. **Initialize the database**:
    Run seeder command to populate the database with initial data:
 
    ```bash
